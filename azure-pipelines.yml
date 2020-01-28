@@ -13,12 +13,19 @@ variables:
   buildConfiguration: 'Release'
 
 steps:
+- script: dotnet restore
+  displayName: '1. dotnet restore'
+
 - script: dotnet build --configuration $(buildConfiguration)
-  displayName: 'dotnet build $(buildConfiguration)'
+  displayName: '2. dotnet build $(buildConfiguration)'
+
+
 - task: DotNetCoreCLI@2
+  displayName: '3. dotnet publish'
   inputs:
     command: publish
     publishWebProjects: True
     arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
     zipAfterPublish: True
 - task: PublishBuildArtifacts@1
+  displayName: '4. publish artefacts'
